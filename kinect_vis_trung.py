@@ -32,7 +32,7 @@ def read_skeleton(path):
 
 # for _, dirs, _ in os.walk(root_dir):
 #     break
-dirs = ['20171123_Phong_lan1_23-11-2017__11-42-22']
+dirs = ['20171123_Phong_lan2_23-11-2017__11-49-53']
 print dirs
 for f_name in dirs:
     # f_name='20171123_Hung_lan1_23-11-2017__11-05-57'
@@ -89,7 +89,7 @@ for f_name in dirs:
             depth = np.asarray(depth, np.uint8)
 
             depth = 255 - depth
-            # ret, depth = cv2.threshold(depth, 254, 255, cv2.THRESH_TOZERO_INV)
+            ret, depth = cv2.threshold(depth, 254, 255, cv2.THRESH_TOZERO_INV)
 
             depth_vis = cv2.applyColorMap(depth, cv2.COLORMAP_JET)
 
@@ -138,9 +138,6 @@ for f_name in dirs:
                 if img is None:
                     break
                 depth = read_depth(depth_vids[kid])
-
-
-
                 # print 'Color shape is:'+str(img.shape)
                 # print 'depth shape is:'+str(depth.shape)
                 location_x = kid % 3 * 640
