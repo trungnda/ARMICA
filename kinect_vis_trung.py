@@ -143,33 +143,6 @@ for f_name in dirs:
                 location_x = kid % 3 * 640
                 location_y = kid / 3 * 480
 
-                # draw skeleton
-                # if frame_idx in skeleton_all[kid]:
-                #     skels = skeleton_all[kid][frame_idx]
-                #
-                #     for skel in skels:
-                #         # print skel
-                #
-                #         for k in range(3):
-                #             cv2.line(img, (skel[k][0], skel[k][1]), (skel[k + 1][0], skel[k + 1][1]), (0, 255, 0), 2)
-                #             cv2.line(img, (skel[k + 4][0], skel[k + 4][1]), (skel[k + 4 + 1][0], skel[k + 4 + 1][1]),
-                #                      (0, 255, 0), 2)
-                #             cv2.line(img, (skel[k + 8][0], skel[k + 8][1]), (skel[k + 8 + 1][0], skel[k + 8 + 1][1]),
-                #                      (0, 255, 0), 2)
-                #             cv2.line(img, (skel[k + 12][0], skel[k + 12][1]),
-                #                      (skel[k + 12 + 1][0], skel[k + 12 + 1][1]), (0, 255, 0), 2)
-                #             cv2.line(img, (skel[k + 16][0], skel[k + 16][1]),
-                #                      (skel[k + 16 + 1][0], skel[k + 16 + 1][1]), (0, 255, 0), 2)
-                #         k = 0
-                #         cv2.line(img, (skel[k][0], skel[k][1]), (skel[k + 12][0], skel[k + 12][1]), (0, 255, 0), 2)
-                #         cv2.line(img, (skel[k][0], skel[k][1]), (skel[k + 16][0], skel[k + 16][1]), (0, 255, 0), 2)
-                #         cv2.line(img, (skel[k + 2][0], skel[k + 2][1]), (skel[k + 4][0], skel[k + 4][1]), (0, 255, 0),
-                #                  2)
-                #         cv2.line(img, (skel[k + 2][0], skel[k + 2][1]), (skel[k + 8][0], skel[k + 8][1]), (0, 255, 0),
-                #                  2)
-                #         for i in range(20):
-                #             cv2.circle(img, (skel[i][0], skel[i][1]), 3, (0, 0, 255), -1)
-
                 img_total[location_y:location_y + 480, location_x:location_x + 640, :] = img
                 img_total[location_y:location_y + 160, location_x:location_x + 213, :] = depth
 
@@ -180,46 +153,6 @@ for f_name in dirs:
             if img is None:
                 break
             img = img_total
-
-            # end_acc_idx = frame_idx * 5
-            # begin_acc_idx = end_acc_idx - length_acc_on_img * 100
-            # if begin_acc_idx < 0:
-            #     begin_acc_idx = 0
-            #
-            # prev_pt = [0.0, 0.0, 0.0, 0.0]
-            # for j in range(begin_acc_idx, end_acc_idx)[::-1]:
-            #     acc_x = acc_hand[j]
-            #     location_x = 1980 - 100 - int((end_acc_idx - j) * 10 * pixels_per_ms)
-            #     if acc_x[0] != 0.0 and acc_x[1] != 0.0 and acc_x[2] != 0.0:
-            #         acc_location_x = int((acc_x[0] + 1) * 30 + 1100)
-            #         acc_location_y = int((acc_x[1] + 1) * 30 + 1100)
-            #         acc_location_z = int((acc_x[2] + 1) * 30 + 1100)
-            #         curr_pt = [location_x, acc_location_x, acc_location_y, acc_location_z]
-            #         if prev_pt[0] != 0.0 and prev_pt[1] != 0.0 and prev_pt[2] != 0.0 and prev_pt[3] != 0.0:
-            #             cv2.line(img, (prev_pt[0], prev_pt[1]), (curr_pt[0], curr_pt[1]), (255, 0, 0), 2)
-            #             cv2.line(img, (prev_pt[0], prev_pt[2]), (curr_pt[0], curr_pt[2]), (0, 255, 0), 2)
-            #             cv2.line(img, (prev_pt[0], prev_pt[3]), (curr_pt[0], curr_pt[3]), (0, 0, 255), 2)
-            #         # break
-            #         prev_pt = curr_pt
-            #
-            # prev_pt = [0.0, 0.0, 0.0, 0.0]
-            # for j in range(begin_acc_idx, end_acc_idx)[::-1]:
-            #     acc_x = acc_belt[j]
-            #     location_x = 1980 - 100 - int((end_acc_idx - j) * 10 * pixels_per_ms)
-            #     if acc_x[0] != 0.0 and acc_x[1] != 0.0 and acc_x[2] != 0.0:
-            #         acc_location_x = int((acc_x[0] + 1) * 30 + 1300)
-            #         acc_location_y = int((acc_x[1] + 1) * 30 + 1300)
-            #         acc_location_z = int((acc_x[2] + 1) * 30 + 1300)
-            #         curr_pt = [location_x, acc_location_x, acc_location_y, acc_location_z]
-            #         if prev_pt[0] != 0.0 and prev_pt[1] != 0.0 and prev_pt[2] != 0.0 and prev_pt[3] != 0.0:
-            #             cv2.line(img, (prev_pt[0], prev_pt[1]), (curr_pt[0], curr_pt[1]), (255, 0, 0), 2)
-            #             cv2.line(img, (prev_pt[0], prev_pt[2]), (curr_pt[0], curr_pt[2]), (0, 255, 0), 2)
-            #             cv2.line(img, (prev_pt[0], prev_pt[3]), (curr_pt[0], curr_pt[3]), (0, 0, 255), 2)
-            #         # break
-            #         prev_pt = curr_pt
-            # plt.imshow(img)
-            # plt.show()
-            # break
             writer.write(img)
             # cv2.namedWindow('',cv2.WINDOW_NORMAL)
             # cv2.imshow('',img)
