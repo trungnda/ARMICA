@@ -1,0 +1,1 @@
+./darknet detector demo cfg/coco.data cfg/yolo.cfg yolo.weights /media/data/datasets/Kinect2017-10/Datasets/20171123_Hung_lan1_23-11-2017__11-05-57/Kinect_7/color.avi -i 0 -out_filename 20171123_Hung_lan1_23_Kinect_7.avi

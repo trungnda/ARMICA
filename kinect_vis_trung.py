@@ -89,7 +89,7 @@ for f_name in dirs:
             depth = np.asarray(depth, np.uint8)
 
             depth = 255 - depth
-            ret, depth = cv2.threshold(depth, 254, 255, cv2.THRESH_TOZERO_INV)
+            # ret, depth = cv2.threshold(depth, 254, 255, cv2.THRESH_TOZERO_INV)
 
             depth_vis = cv2.applyColorMap(depth, cv2.COLORMAP_JET)
 
