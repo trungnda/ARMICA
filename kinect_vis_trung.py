@@ -85,16 +85,21 @@ for f_name in dirs:
             img_data = np.fromstring(file_reader.read(val[0]), dtype=np.uint8)
             depth = cv2.imdecode(img_data, cv2.IMREAD_ANYDEPTH)
             depth = cv2.resize(depth, (640 / 3, 480 / 3))
-            depth = np.right_shift(depth, 7)
-            depth = np.asarray(depth, np.uint8)
+            # depth = np.right_shift(depth, 7)
+            # depth = np.asarray(depth, np.uint8)
+            depth = np.left_shift(depth, 5)
 
-            depth = 255 - depth
+            # depth = 255 - depth
             # ret, depth = cv2.threshold(depth, 254, 255, cv2.THRESH_TOZERO_INV)
 
-            depth_vis = cv2.applyColorMap(depth, cv2.COLORMAP_JET)
+            ret, mask = cv2.threshold(depth, 1, 255, cv2.THRESH_BINARY)
+
+            # depth_vis = cv2.applyColorMap(depth, cv2.COLORMAP_JET)
 
             # depth
-            return depth_vis
+            # return depth_vis
+            mask = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
+            return mask
         except Exception as e:
             print 'Error: ' + str(e)
             return None
@@ -138,6 +143,21 @@ for f_name in dirs:
                 if img is None:
                     break
                 depth = read_depth(depth_vids[kid])
+
+                temp, contours, hierarchy = cv2.findContours(depth, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+                depth = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+                cv2.drawContours(depth, contours, -1, (0, 255, 0), 1)
+
+                maxContourIndex = 0
+                if (len(contours) > 0):
+                    for index, contour in enumerate(contours):
+                        if (cv2.contourArea(contour) >= cv2.contourArea(contours[maxContourIndex])):
+                            maxContourIndex = index
+                    x, y, w, h = cv2.boundingRect(contours[maxContourIndex])
+                    cv2.rectangle(depth, (x, y), (x + w, y + h), (255, 0, 0), 3)
+                    cv2.rectangle(img, (x*3, y*3), (x*3 + w*3, y*3 + h*3), (0, 255, 0), 3)
+
+
                 # print 'Color shape is:'+str(img.shape)
                 # print 'depth shape is:'+str(depth.shape)
                 location_x = kid % 3 * 640
