@@ -1,10 +1,14 @@
-import os, numpy as np, matplotlib.pyplot as plt, cv2
+import os, numpy as np , cv2
+import matplotlib
+matplotlib.use('TkAgg')
 
-root_dir = '/media/data/datasets/Kinect2017-10/Datasets/'
-out_dir = '/home/nguyenductrung/kinect_vis/output/'
+# root_dir = '/media/data/datasets/Kinect2017-10/Datasets/'
+# out_dir = '/home/nguyenductrung/kinect_vis/output/'
+
+root_dir = '/Users/trungnd/pfiev/dataset/'
+out_dir = '/Users/trungnd/pfiev/report/'
 
 
-# out_dir='/media/data/datasets/Kinect_vis/v2/'
 def read_skeleton(path):
     data = {}
     f = open(path, 'rt')
@@ -33,6 +37,7 @@ def read_skeleton(path):
 # for _, dirs, _ in os.walk(root_dir):
 #     break
 dirs = ['20171123_Phong_lan2_23-11-2017__11-49-53']
+# dirs = ['20171128_Phuong_28-11-2017__10-16-52']
 print dirs
 for f_name in dirs:
     # f_name='20171123_Hung_lan1_23-11-2017__11-05-57'
@@ -84,22 +89,17 @@ for f_name in dirs:
             # print 'img size: '+str(val[0])
             img_data = np.fromstring(file_reader.read(val[0]), dtype=np.uint8)
             depth = cv2.imdecode(img_data, cv2.IMREAD_ANYDEPTH)
-            depth = cv2.resize(depth, (640 / 3, 480 / 3))
+            # depth = cv2.resize(depth, (640 / 3, 480 / 3))
             # depth = np.right_shift(depth, 7)
-            # depth = np.asarray(depth, np.uint8)
-            depth = np.left_shift(depth, 5)
+            depth = np.asarray(depth, np.uint8)
 
-            # depth = 255 - depth
-            # ret, depth = cv2.threshold(depth, 254, 255, cv2.THRESH_TOZERO_INV)
-
-            ret, mask = cv2.threshold(depth, 1, 255, cv2.THRESH_BINARY)
+            depth = 255 - depth
+            ret, depth = cv2.threshold(depth, 254, 255, cv2.THRESH_TOZERO_INV)
 
             # depth_vis = cv2.applyColorMap(depth, cv2.COLORMAP_JET)
 
             # depth
-            # return depth_vis
-            mask = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
-            return mask
+            return depth
         except Exception as e:
             print 'Error: ' + str(e)
             return None
@@ -142,12 +142,11 @@ for f_name in dirs:
                 ret, img = color_vids[kid].read()
                 if img is None:
                     break
-                depth = read_depth(depth_vids[kid])
-
-                temp, contours, hierarchy = cv2.findContours(depth, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-                depth = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+                im2, contours, hierarchy = cv2.findContours(depth, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+                depth = cv2.cvtColor(depth, cv2.COLOR_GRAY2BGR)
                 cv2.drawContours(depth, contours, -1, (0, 255, 0), 1)
-
+                #
+                #
                 maxContourIndex = 0
                 if (len(contours) > 0):
                     for index, contour in enumerate(contours):
